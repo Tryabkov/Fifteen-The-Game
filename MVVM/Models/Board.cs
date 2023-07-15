@@ -61,6 +61,9 @@ namespace Fifteen_The_Game.MVVM.Models
             Cells[EmptyCellIndex] = temp;
             EmptyCellIndex = CellIndex;
 
+        private bool IsWin()
+        {
+            return false;
         }
     }
 }
