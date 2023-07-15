@@ -37,7 +37,7 @@ namespace Fifteen_The_Game.MVVM.ViewModels
 
         public MainViewModel()
         {
-            
+            Board.OnWin += OnWin;
 
             int rows = 3;
             int margin = 2;
@@ -80,6 +80,11 @@ namespace Fifteen_The_Game.MVVM.ViewModels
                     Board.ButtonClicked((Cell)obj);
                 });
             }
+        }
+
+        private void OnWin()
+        {
+            IsPlayScreenEnabled = false;
         }
     }
 }

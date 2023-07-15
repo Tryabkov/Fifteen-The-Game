@@ -11,21 +11,25 @@ namespace Fifteen_The_Game.MVVM.Models
 {
     internal class Board
     {
+        public event Action OnWin;
 
         private int EmptyCellIndex;
         public ObservableCollection<Cell> Cells { get => _cells; set => _cells = value; }
         private ObservableCollection<Cell> _cells;
 
+        private readonly int _rows;
+
         public int Margin { get; set; }
 
         public Board(int rows, int margin)
         {
-            GenerateBoard(rows, margin);
+            _rows = rows;
+            GenerateBoard(margin);
         }
 
-        private void GenerateBoard(int rows, int margin)
+        private void GenerateBoard(int margin)
         {
-            int rowsInCube = rows * rows;
+            int rowsInCube = _rows * _rows;
             _cells = new ObservableCollection<Cell>();
             Random rnd = new Random();
             for (int i = 0; i < rowsInCube; i++)
@@ -43,10 +47,14 @@ namespace Fifteen_The_Game.MVVM.Models
 
         public void ButtonClicked(Cell cell)
         {
-            
-            if (true)
+            int cellIndex = cell.Index;
+            if (!IsWin() && 
+              ((cellIndex >= _rows && Cells[cellIndex - _rows].Num == "0")||
+               (cellIndex + _rows < _rows*_rows && Cells[cellIndex + _rows].Num == "0")||
+               (cellIndex > 0 && Cells[cellIndex - 1].Num == "0")|| 
+               (cellIndex + 1 < _rows*_rows && Cells[cellIndex + 1].Num == "0")))
             {
-                Swap(cell.Index);
+                Swap(cellIndex);
             }
 
         }
@@ -60,10 +68,20 @@ namespace Fifteen_The_Game.MVVM.Models
 
             Cells[EmptyCellIndex] = temp;
             EmptyCellIndex = CellIndex;
+        }
 
         private bool IsWin()
         {
-            return false;
+            bool result = true;
+            for (int i = 0; i < Cells.Count; i++)
+            {
+                if (!(Cells[i].Num == i.ToString()))
+                {
+                    result = false; break;
+                }
+                if (result) { OnWin?.Invoke(); }
+            }            
+            return result;
         }
     }
 }

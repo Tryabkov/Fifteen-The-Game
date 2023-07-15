@@ -23,10 +23,9 @@
         <StackPanel Orientation="Horizontal">
             <Button Content="Play" Command="{Binding PlayButton_Click}"/>
             <Button Content="Settings" Command="{Binding SettingsButton_Click}" />
-
         </StackPanel>
 
-        <ItemsControl x:Name="BoardItemControl" Grid.Row="1" ItemsSource="{Binding Board.Cells}">
+        <ItemsControl x:Name="BoardItemControl" Grid.Row="1" ItemsSource="{Binding Board.Cells}" IsEnabled="{Binding IsPlayScreenEnabled}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel/>
