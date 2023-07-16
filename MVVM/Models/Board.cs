@@ -13,17 +13,17 @@ namespace Fifteen_The_Game.MVVM.Models
     {
         public event Action OnWin;
 
-        private int EmptyCellIndex;
+        private Cell EmptyCell;
         public ObservableCollection<Cell> Cells { get => _cells; set => _cells = value; }
         private ObservableCollection<Cell> _cells;
 
         private readonly int _rows;
 
-        public int Margin { get; set; }
 
-        public Board(int rows, int margin)
+        public Board(int rows)
         {
             _rows = rows;
+            int margin = 2;
             GenerateBoard(margin);
         }
 
@@ -36,52 +36,57 @@ namespace Fifteen_The_Game.MVVM.Models
             {
                 _cells.Add(new Cell(i, margin));
             }
-            EmptyCellIndex = 0;
+            EmptyCell = Cells[0];
             Mix();
         }
 
         private void Mix()
         {
-            
+            Random rnd = new Random();
+
+            for (int i = 0; i < Cells.Count; i++)
+            {
+                Swap(i, rnd.Next(0, Cells.Count));
+            }
         }
 
         public void ButtonClicked(Cell cell)
         {
             int cellIndex = cell.Index;
-            if (!IsWin() && 
-              ((cellIndex >= _rows && Cells[cellIndex - _rows].Num == "0")||
+            if (((cellIndex >= _rows && Cells[cellIndex - _rows].Num == "0")||
                (cellIndex + _rows < _rows*_rows && Cells[cellIndex + _rows].Num == "0")||
-               (cellIndex > 0 && Cells[cellIndex - 1].Num == "0")|| 
-               (cellIndex + 1 < _rows*_rows && Cells[cellIndex + 1].Num == "0")))
+               (cellIndex > 0 && (cellIndex%_rows) != 0 && Cells[cellIndex - 1].Num == "0")|| 
+               (cellIndex + 1 < _rows*_rows && (cellIndex+1) % _rows != 0 && Cells[cellIndex + 1].Num == "0")))
             {
-                Swap(cellIndex);
+                Swap(EmptyCell.Index, cellIndex);
+                EmptyCell.Index = cellIndex;
+                IsWin();
             }
 
         }
 
-        private void Swap(int CellIndex)
+        private void Swap(int firstIndex, int secondIndex)
         {
-            var temp = Cells[CellIndex];
-            temp.Index = EmptyCellIndex;
+            var temp = Cells[firstIndex];
 
-            Cells[CellIndex] = Cells[EmptyCellIndex];
+            Cells[firstIndex] = Cells[secondIndex];
+            Cells[firstIndex].Index = firstIndex;
 
-            Cells[EmptyCellIndex] = temp;
-            EmptyCellIndex = CellIndex;
+            Cells[secondIndex] = temp;
+            Cells[secondIndex].Index = secondIndex;
         }
 
-        private bool IsWin()
+        private void IsWin()
         {
             bool result = true;
-            for (int i = 0; i < Cells.Count; i++)
+            for (int i = 0; i < Cells.Count - 1; i++)
             {
-                if (!(Cells[i].Num == i.ToString()))
+                if (!(Cells[i].Num == (i + 1).ToString()))
                 {
                     result = false; break;
                 }
-                if (result) { OnWin?.Invoke(); }
             }            
-            return result;
+            if (!result) { OnWin?.Invoke(); }
         }
     }
 }

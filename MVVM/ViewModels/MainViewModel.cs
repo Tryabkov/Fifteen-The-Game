@@ -15,6 +15,7 @@ namespace Fifteen_The_Game.MVVM.ViewModels
         #region Constants
         const int SIDE_SIZE = 60;
         const int BAR = 20;
+        public string WINMESSAGE { get; } = "You win!";
         #endregion
 
         #region Window Size
@@ -26,27 +27,30 @@ namespace Fifteen_The_Game.MVVM.ViewModels
 
         #region Window States
         public bool IsPlayScreenEnabled { get => _isPlayScreenEnabled; set { _isPlayScreenEnabled = value; OnPropertyChanged(); } }
-        public bool IsSettingsScreenEnabled { get => !_isPlayScreenEnabled; set { _isPlayScreenEnabled = !value; OnPropertyChanged(); } }
+        public bool IsWinScreenEnabled { get => _isWinScreenEnabled; set { _isWinScreenEnabled = value; OnPropertyChanged(); } }
+        public bool IsSettingsScreenEnabled { get => !_IsSettingsScreenEnabled; set { _IsSettingsScreenEnabled = !value; OnPropertyChanged(); } }
 
         private bool _isPlayScreenEnabled;
+        private bool _isWinScreenEnabled;
+        private bool _IsSettingsScreenEnabled;
         #endregion
 
         public Board Board { get => _board; set => _board = value; }
         private Board _board;
 
+        public int Rows { get; set; }
 
         public MainViewModel()
         {
-            Board.OnWin += OnWin;
-
-            int rows = 3;
+            Rows = 10;
             int margin = 2;
+            _board = new Board(Rows);
+            Board.OnWin += OnWin;
+            IsPlayScreenEnabled = true;
 
-            _board = new Board(rows, margin);
-            Width = (((margin * 2) + SIDE_SIZE) * rows);
-            Height = BAR + ((margin * 2 + SIDE_SIZE) * rows);
-            //App.Current.MainWindow.Height = Height;
-            //App.Current.MainWindow.Width = Width;
+
+            Width = (((margin * 2) + SIDE_SIZE) * Rows);
+            Height = BAR + ((margin * 2 + SIDE_SIZE) * Rows);
         }
 
         public ICommand PlayButton_Click
@@ -55,7 +59,8 @@ namespace Fifteen_The_Game.MVVM.ViewModels
             {
                 return new DelegateCommand((obj) =>
                 {
-
+                    Board = new Board(Rows);
+                    IsWinScreenEnabled = false;
                 });
             }
         }
@@ -85,6 +90,7 @@ namespace Fifteen_The_Game.MVVM.ViewModels
         private void OnWin()
         {
             IsPlayScreenEnabled = false;
+            IsWinScreenEnabled = true;
         }
     }
 }

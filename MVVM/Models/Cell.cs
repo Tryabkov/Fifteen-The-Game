@@ -13,8 +13,7 @@ namespace Fifteen_The_Game.MVVM.Models
         public string Num { get => _num.ToString(); set { _num = int.Parse(value); }}
         private int _num;
 
-        public int Margin { get => _margin; set { _margin = value; } }
-        private int _margin;
+        public int Margin { get; set; }
 
         public int Index;
 

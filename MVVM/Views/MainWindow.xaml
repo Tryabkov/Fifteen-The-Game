@@ -42,5 +42,24 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
+
+        <Grid Height="100" Width="100" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.RowSpan="2" Grid.ColumnSpan="2" Background="White" IsEnabled="{Binding IsWinScreenEnabled}">
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Style.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0"/>
+                            <Setter Property="Panel.ZIndex" Value="-10"/>
+                        </Trigger>
+
+                        <Trigger Property="IsEnabled" Value="True">
+                            <Setter Property="Opacity" Value="10"/>
+                            <Setter Property="Panel.ZIndex" Value="10"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+            <TextBlock FontSize="24" VerticalAlignment="Center" Text="{Binding WINMESSAGE, Mode=OneWay}" IsEnabled="False" HorizontalAlignment="Center"/>
+        </Grid>
     </Grid>
 </Window>
