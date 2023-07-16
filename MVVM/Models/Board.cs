@@ -17,24 +17,23 @@ namespace Fifteen_The_Game.MVVM.Models
         public ObservableCollection<Cell> Cells { get => _cells; set => _cells = value; }
         private ObservableCollection<Cell> _cells;
 
-        private readonly int _rows;
+        private int _rows;
 
 
-        public Board(int rows)
+        public Board()
         {
-            _rows = rows;
-            int margin = 2;
-            GenerateBoard(margin);
+
         }
 
-        private void GenerateBoard(int margin)
+        public void GenerateBoard(int rows)
         {
-            int rowsInCube = _rows * _rows;
+            _rows = rows;
+            int rowsInCube = rows * rows;
             _cells = new ObservableCollection<Cell>();
             Random rnd = new Random();
             for (int i = 0; i < rowsInCube; i++)
             {
-                _cells.Add(new Cell(i, margin));
+                _cells.Add(new Cell(i));
             }
             EmptyCell = Cells[0];
             Mix();

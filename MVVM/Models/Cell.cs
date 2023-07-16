@@ -17,9 +17,9 @@ namespace Fifteen_The_Game.MVVM.Models
 
         public int Index;
 
-        public Cell(int Num, int margin)
+        public Cell(int Num)
         {
-            Margin = margin;
+            Margin = 2;
             Index = _num = Num;
         }
     }

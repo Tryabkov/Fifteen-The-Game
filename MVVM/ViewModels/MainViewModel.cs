@@ -47,16 +47,17 @@ namespace Fifteen_The_Game.MVVM.ViewModels
         public MainViewModel()
         {
             Rows = 4;
+            Board = new Board();
             GenerateBoard(margin: 2);
             _isPlayScreenEnabled = true;
             _IsSettingsScreenEnabled = false;
 
-            Board.OnWin += OnWin;
+            
         }
 
         private void GenerateBoard(int margin)
         {
-            _board = new Board(Rows);
+            _board.GenerateBoard(Rows);
             OnPropertyChanged(nameof(Board));
 
             Width = (((margin * 2) + SIDE_SIZE) * Rows);
@@ -64,6 +65,7 @@ namespace Fifteen_The_Game.MVVM.ViewModels
 
             OnPropertyChanged(nameof(WidthWin));
             OnPropertyChanged(nameof(HeightWin));
+            _board.OnWin += OnWin;
         }
 
         
@@ -74,9 +76,9 @@ namespace Fifteen_The_Game.MVVM.ViewModels
             {
                 return new DelegateCommand((obj) =>
                 {
-                    Board = new Board(Rows);
-                    OnPropertyChanged(nameof(Board));
+                    GenerateBoard(Rows);
                     IsWinScreenEnabled = false;
+                    IsPlayScreenEnabled = true;
                 });
             }
         }
