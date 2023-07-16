@@ -42,7 +42,7 @@ namespace Fifteen_The_Game.MVVM.ViewModels
 
         public MainViewModel()
         {
-            Rows = 10;
+            Rows = 4;
             int margin = 2;
             _board = new Board(Rows);
             Board.OnWin += OnWin;

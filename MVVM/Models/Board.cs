@@ -86,7 +86,7 @@ namespace Fifteen_The_Game.MVVM.Models
                     result = false; break;
                 }
             }            
-            if (!result) { OnWin?.Invoke(); }
+            if (result) { OnWin?.Invoke(); }
         }
     }
 }
