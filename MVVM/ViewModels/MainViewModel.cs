@@ -7,6 +7,8 @@ using Fifteen_The_Game.MVVM.Core;
 using System.Windows.Input;
 using Fifteen_The_Game.MVVM.Models;
 using System.Windows;
+using System.Windows.Controls;
+using System.Diagnostics;
 
 namespace Fifteen_The_Game.MVVM.ViewModels
 {
@@ -19,8 +21,10 @@ namespace Fifteen_The_Game.MVVM.ViewModels
         #endregion
 
         #region Window Size
+        public int WidthWin { get => _width; }
         public int Width { get => _width; set { _width = value; OnPropertyChanged(); } }
         private int _width;
+        public int HeightWin { get => _height + 30; }
         public int Height { get => _height; set { _height = value; OnPropertyChanged(); } }
         private int _height;
         #endregion
@@ -28,7 +32,7 @@ namespace Fifteen_The_Game.MVVM.ViewModels
         #region Window States
         public bool IsPlayScreenEnabled { get => _isPlayScreenEnabled; set { _isPlayScreenEnabled = value; OnPropertyChanged(); } }
         public bool IsWinScreenEnabled { get => _isWinScreenEnabled; set { _isWinScreenEnabled = value; OnPropertyChanged(); } }
-        public bool IsSettingsScreenEnabled { get => !_IsSettingsScreenEnabled; set { _IsSettingsScreenEnabled = !value; OnPropertyChanged(); } }
+        public bool IsSettingsScreenEnabled { get => _IsSettingsScreenEnabled; set { _IsSettingsScreenEnabled = value; OnPropertyChanged(); } }
 
         private bool _isPlayScreenEnabled;
         private bool _isWinScreenEnabled;
@@ -43,15 +47,26 @@ namespace Fifteen_The_Game.MVVM.ViewModels
         public MainViewModel()
         {
             Rows = 4;
-            int margin = 2;
-            _board = new Board(Rows);
-            Board.OnWin += OnWin;
-            IsPlayScreenEnabled = true;
+            GenerateBoard(margin: 2);
+            _isPlayScreenEnabled = true;
+            _IsSettingsScreenEnabled = false;
 
+            Board.OnWin += OnWin;
+        }
+
+        private void GenerateBoard(int margin)
+        {
+            _board = new Board(Rows);
+            OnPropertyChanged(nameof(Board));
 
             Width = (((margin * 2) + SIDE_SIZE) * Rows);
             Height = BAR + ((margin * 2 + SIDE_SIZE) * Rows);
+
+            OnPropertyChanged(nameof(WidthWin));
+            OnPropertyChanged(nameof(HeightWin));
         }
+
+        
 
         public ICommand PlayButton_Click
         {
@@ -60,6 +75,7 @@ namespace Fifteen_The_Game.MVVM.ViewModels
                 return new DelegateCommand((obj) =>
                 {
                     Board = new Board(Rows);
+                    OnPropertyChanged(nameof(Board));
                     IsWinScreenEnabled = false;
                 });
             }
@@ -71,7 +87,7 @@ namespace Fifteen_The_Game.MVVM.ViewModels
             {
                 return new DelegateCommand((obj) =>
                 {
-
+                    IsSettingsScreenEnabled = !IsSettingsScreenEnabled;
                 });
             }
         }
@@ -83,6 +99,19 @@ namespace Fifteen_The_Game.MVVM.ViewModels
                 return new DelegateCommand((obj) =>
                 {
                     Board.ButtonClicked((Cell)obj);
+                });
+            }
+        }
+
+        public ICommand OnSettingChanged
+        {
+            get
+            {
+                return new DelegateCommand((obj) =>
+                {
+                    Rows = Int32.Parse(obj.ToString());
+                    GenerateBoard(margin: 2);
+                    
                 });
             }
         }

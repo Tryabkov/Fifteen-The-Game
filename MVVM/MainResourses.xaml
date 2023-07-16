@@ -23,4 +23,15 @@
         </Style.Triggers>
     </Style>
 
+    <Style x:Key="Control_Button" TargetType="Button">
+    
+    </Style>
+
+    <Style x:Key="SelectSize_RadioButton" TargetType="RadioButton">
+        <Setter Property="IsThreeState" Value="True"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="Command" Value="{Binding OnSettingChanged}"/>
+        <Setter Property="CommandParameter" Value="{Binding Content, RelativeSource={RelativeSource Self}}"/>
+        <Setter Property="Margin" Value="0,10,15,0"/>
+    </Style>
 </ResourceDictionary>
