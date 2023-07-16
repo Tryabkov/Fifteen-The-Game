@@ -6,7 +6,7 @@
         xmlns:vm="clr-namespace:Fifteen_The_Game.MVVM.ViewModels"
         xmlns:local="clr-namespace:Fifteen_The_Game"
         mc:Ignorable="d"
-        Title="MainWindow" Height="{Binding HeightWin}" Width="{Binding WidthWin}" ResizeMode="CanMinimize" SizeToContent="WidthAndHeight">
+        Title="Feefteen The Game" Height="{Binding HeightWin}" Width="{Binding WidthWin}" ResizeMode="CanMinimize" SizeToContent="WidthAndHeight">
     <Window.Resources>
         <ResourceDictionary Source="/MVVM/MainResourses.xaml"/>
     </Window.Resources>
@@ -23,7 +23,7 @@
 
         <!--#region Control Buttons-->
         <StackPanel Orientation="Horizontal">
-            <Button Content="Play" Command="{Binding PlayButton_Click}"/>
+            <Button Content="Play" Command="{Binding PlayButton_Click}" Margin="0,0,10,0"/>
             <Button Content="Settings" Command="{Binding SettingsButton_Click}" />
         </StackPanel>
         <!--#endregion-->
