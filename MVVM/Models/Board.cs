@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Windows.Controls;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Media;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace Fifteen_The_Game.MVVM.Models
@@ -19,19 +13,14 @@ namespace Fifteen_The_Game.MVVM.Models
 
         private int _rows;
 
-
         public Board()
-        {
-
-        }
+        { }
 
         public void GenerateBoard(int rows)
         {
             _rows = rows;
-            int rowsInCube = rows * rows;
             _cells = new ObservableCollection<Cell>();
-            Random rnd = new Random();
-            for (int i = 0; i < rowsInCube; i++)
+            for (int i = 0; i < rows * rows; i++)
             {
                 _cells.Add(new Cell(i));
             }
@@ -52,16 +41,15 @@ namespace Fifteen_The_Game.MVVM.Models
         public void ButtonClicked(Cell cell)
         {
             int cellIndex = cell.Index;
-            if (((cellIndex >= _rows && Cells[cellIndex - _rows].Num == "0")||
-               (cellIndex + _rows < _rows*_rows && Cells[cellIndex + _rows].Num == "0")||
-               (cellIndex > 0 && (cellIndex%_rows) != 0 && Cells[cellIndex - 1].Num == "0")|| 
-               (cellIndex + 1 < _rows*_rows && (cellIndex+1) % _rows != 0 && Cells[cellIndex + 1].Num == "0")))
+            if ((cellIndex >= _rows && Cells[cellIndex - _rows].Num == "0") || 
+               (cellIndex + _rows < _rows * _rows && Cells[cellIndex + _rows].Num == "0") ||                       //checking for the possibility of square movement
+               (cellIndex > 0 && (cellIndex % _rows) != 0 && Cells[cellIndex - 1].Num == "0") ||
+               (cellIndex + 1 < _rows * _rows && (cellIndex + 1) % _rows != 0 && Cells[cellIndex + 1].Num == "0"))
             {
                 Swap(EmptyCell.Index, cellIndex);
                 EmptyCell.Index = cellIndex;
                 IsWin();
             }
-
         }
 
         private void Swap(int firstIndex, int secondIndex)
@@ -84,7 +72,7 @@ namespace Fifteen_The_Game.MVVM.Models
                 {
                     result = false; break;
                 }
-            }            
+            }
             if (result) { OnWin?.Invoke(); }
         }
     }

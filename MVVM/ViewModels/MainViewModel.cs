@@ -1,15 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
+﻿using System.Windows.Input;
 using Fifteen_The_Game.MVVM.Core;
-using System.Windows.Input;
 using Fifteen_The_Game.MVVM.Models;
-using System.Windows;
-using System.Windows.Controls;
-using System.Diagnostics;
-#hui1337
 namespace Fifteen_The_Game.MVVM.ViewModels
 {
     internal class MainViewModel : Base.ViewModel
@@ -17,6 +8,7 @@ namespace Fifteen_The_Game.MVVM.ViewModels
         #region Constants
         const int SIDE_SIZE = 60;
         const int BAR = 20;
+        const int MARGIN = 2;
         public string WINMESSAGE { get; } = "You win!";
         #endregion
 
@@ -46,38 +38,41 @@ namespace Fifteen_The_Game.MVVM.ViewModels
 
         public MainViewModel()
         {
-            Rows = 4;
+            Rows = 4; // base value
             Board = new Board();
-            GenerateBoard(margin: 2);
+            GenerateBoard();
             _isPlayScreenEnabled = true;
             _IsSettingsScreenEnabled = false;
-
-            
         }
 
-        private void GenerateBoard(int margin)
+        private void GenerateBoard()
         {
             _board.GenerateBoard(Rows);
+
+            Width = ((MARGIN * 2) + SIDE_SIZE) * Rows;
+            Height = BAR + ((MARGIN * 2 + SIDE_SIZE) * Rows);
+
             OnPropertyChanged(nameof(Board));
-
-            Width = (((margin * 2) + SIDE_SIZE) * Rows);
-            Height = BAR + ((margin * 2 + SIDE_SIZE) * Rows);
-
-            OnPropertyChanged(nameof(WidthWin));
+            OnPropertyChanged(nameof(WidthWin));  //initialize PropertyChanged event 
             OnPropertyChanged(nameof(HeightWin));
             _board.OnWin += OnWin;
         }
 
-        
+        private void OnWin()
+        {
+            IsPlayScreenEnabled = false;
+            IsWinScreenEnabled = true;
+        }
 
+        #region button`s handlers
         public ICommand PlayButton_Click
         {
             get
             {
                 return new DelegateCommand((obj) =>
                 {
-                    GenerateBoard(Rows);
-                    IsWinScreenEnabled = false;
+                    GenerateBoard(); //regenerating board
+                    IsWinScreenEnabled = false; //hide win screen and show play screen
                     IsPlayScreenEnabled = true;
                 });
             }
@@ -89,7 +84,7 @@ namespace Fifteen_The_Game.MVVM.ViewModels
             {
                 return new DelegateCommand((obj) =>
                 {
-                    IsSettingsScreenEnabled = !IsSettingsScreenEnabled;
+                    IsSettingsScreenEnabled = !IsSettingsScreenEnabled; //hide or show setting screen
                 });
             }
         }
@@ -100,28 +95,22 @@ namespace Fifteen_The_Game.MVVM.ViewModels
             {
                 return new DelegateCommand((obj) =>
                 {
-                    Board.ButtonClicked((Cell)obj);
+                    Board.ButtonClicked((Cell)obj); // move square
                 });
             }
         }
 
-        public ICommand OnSettingChanged
+        public ICommand SettingsRadioButton_Click
         {
             get
             {
                 return new DelegateCommand((obj) =>
                 {
-                    Rows = Int32.Parse(obj.ToString());
-                    GenerateBoard(margin: 2);
-                    
+                    Rows = int.Parse(obj.ToString()); //save settings and regenerate board
+                    GenerateBoard();
                 });
             }
         }
-
-        private void OnWin()
-        {
-            IsPlayScreenEnabled = false;
-            IsWinScreenEnabled = true;
-        }
+        #endregion   
     }
 }

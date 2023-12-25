@@ -12,7 +12,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using Fifteen_The_Game.MVVM.ViewModels;
-using Fifteen_The_Game.MVVM.Views;
 
 namespace Fifteen_The_Game
 {

@@ -15,7 +15,8 @@
         <vm:MainViewModel/>
     </Window.DataContext>
 
-    <Grid Height="{Binding Height, Mode=OneWay}" Width="{Binding Width, Mode=OneWay}" VerticalAlignment="Center" HorizontalAlignment="Center">
+    <Grid Height="{Binding Height, Mode=OneWay}" Width="{Binding Width, Mode=OneWay}"
+          VerticalAlignment="Center" HorizontalAlignment="Center">
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
             <RowDefinition/>
@@ -23,34 +24,39 @@
 
         <!--#region Control Buttons-->
         <StackPanel Orientation="Horizontal">
-            <Button Content="Play" Command="{Binding PlayButton_Click}" Margin="0,0,10,0"/>
-            <Button Content="Settings" Command="{Binding SettingsButton_Click}" />
+            <Button Content="Play" Command="{Binding PlayButton_Click}"
+                    Margin="0,0,10,0" Style="{Binding Source={StaticResource Control_Button}}"/>
+            
+            <Button Content="Settings" Command="{Binding SettingsButton_Click}"
+                    Style="{Binding Source={StaticResource Control_Button}}"/>
         </StackPanel>
         <!--#endregion-->
 
         <!--#region Board-->
-        <ItemsControl x:Name="BoardItemControl" Grid.Row="1" ItemsSource="{Binding Board.Cells}" IsEnabled="{Binding IsPlayScreenEnabled}">
-            <!--#region Panel-->
+        <ItemsControl x:Name="BoardItemControl" Grid.Row="1"
+                      ItemsSource="{Binding Board.Cells}" IsEnabled="{Binding IsPlayScreenEnabled}">
+            
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel/>
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
-            <!--#endregion-->
 
-            <!--#region Template-->
+            <!--#region Square Button template-->
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <Button x:Name="CellButton" Margin="{Binding Margin}" 
                             Content="{Binding Num}" 
                             Style="{Binding Mode=OneWay, Source={StaticResource Cell_Button}}"
-                            Command="{Binding DataContext.CellButton_Click, ElementName=window, Mode=OneWay}" CommandParameter="{Binding}">
+                            Command="{Binding DataContext.CellButton_Click, ElementName=window, Mode=OneWay}"
+                            CommandParameter="{Binding}">
                     </Button>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
             <!--#endregion-->
         </ItemsControl>
-
+        <!--#endregion-->
+        
         <!--#region Settings-->
         <StackPanel Height="{Binding ActualHeight, ElementName=BoardItemControl, Mode=OneWay}"
               Width="{Binding ActualWidth, ElementName=BoardItemControl, Mode=OneWay}"
@@ -77,19 +83,20 @@
 
             <StackPanel Orientation="Horizontal" Margin="0,0,15,0">
                 <WrapPanel Width="105">
-                    <RadioButton Content="3"  Style="{Binding Mode=OneWay, Source={StaticResource SelectSize_RadioButton}}"/>
-                    <RadioButton Content="4"  Style="{Binding Mode=OneWay, Source={StaticResource SelectSize_RadioButton}}"/>
-                    <RadioButton Content="5"  Style="{Binding Mode=OneWay, Source={StaticResource SelectSize_RadioButton}}"/>
-                    <RadioButton Content="6"  Style="{Binding Mode=OneWay, Source={StaticResource SelectSize_RadioButton}}"/>
-                    <RadioButton Content="7"  Style="{Binding Mode=OneWay, Source={StaticResource SelectSize_RadioButton}}"/>
-                    <RadioButton Content="8"  Style="{Binding Mode=OneWay, Source={StaticResource SelectSize_RadioButton}}"/>
-                    <RadioButton Content="9"  Style="{Binding Mode=OneWay, Source={StaticResource SelectSize_RadioButton}}"/>
-                    <RadioButton Content="10" Style="{Binding Mode=OneWay, Source={StaticResource SelectSize_RadioButton}}"/>
+                    <RadioButton Content="3"  Style="{Binding Source={StaticResource SelectSize_RadioButton}}"/>
+                    <RadioButton Content="4"  Style="{Binding Source={StaticResource SelectSize_RadioButton}}"/>
+                    <RadioButton Content="5"  Style="{Binding Source={StaticResource SelectSize_RadioButton}}"/>
+                    <RadioButton Content="6"  Style="{Binding Source={StaticResource SelectSize_RadioButton}}"/>
+                    <RadioButton Content="7"  Style="{Binding Source={StaticResource SelectSize_RadioButton}}"/>
+                    <RadioButton Content="8"  Style="{Binding Source={StaticResource SelectSize_RadioButton}}"/>
+                    <RadioButton Content="9"  Style="{Binding Source={StaticResource SelectSize_RadioButton}}"/>
+                    <RadioButton Content="10" Style="{Binding Source={StaticResource SelectSize_RadioButton}}"/>
                 </WrapPanel>
             </StackPanel>
-            <Button Content="OK" Command="{Binding SettingsButton_Click}" Width="76" HorizontalAlignment="Left" Margin="1,4,0,0"/>
+            <Button Content="OK" Command="{Binding SettingsButton_Click}" Width="76"
+                    HorizontalAlignment="Left" Margin="1,4,0,0" Style="{Binding Source={StaticResource Control_Button}}"/>
         </StackPanel>
-        <!--#endregion-->
+
 
         <!--#region Win screen-->
         <Grid Height="{Binding ActualHeight, ElementName=BoardItemControl, Mode=OneWay}"
@@ -97,7 +104,7 @@
               VerticalAlignment="Center" HorizontalAlignment="Center" Grid.RowSpan="2"
               Grid.ColumnSpan="2" Background="White" IsEnabled="{Binding IsWinScreenEnabled}" Margin="0,22,0,0">
 
-            <!--#region Win screen style-->
+            <!--#region Win screen triggers-->
             <Grid.Style>
                 <Style TargetType="Grid">
                     <Style.Triggers>
@@ -114,8 +121,9 @@
                 </Style>
             </Grid.Style>
             <!--#endregion-->
-            
-            <TextBlock FontSize="24" VerticalAlignment="Center" Text="{Binding WINMESSAGE, Mode=OneWay}" IsEnabled="False" HorizontalAlignment="Center"/>
+
+            <TextBlock FontSize="24" VerticalAlignment="Center"  IsEnabled="False"
+                       Text="{Binding WINMESSAGE, Mode=OneWay}" HorizontalAlignment="Center"/>
         </Grid>
         <!--#endregion-->
     </Grid>

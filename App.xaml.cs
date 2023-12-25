@@ -5,7 +5,6 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using Fifteen_The_Game.MVVM.Views;
 
 namespace Fifteen_The_Game
 {

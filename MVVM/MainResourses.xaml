@@ -24,13 +24,15 @@
     </Style>
 
     <Style x:Key="Control_Button" TargetType="Button">
-    
+        <Setter Property="BorderBrush" Value="White"/>
+        <Setter Property="Background" Value="WhiteSmoke"/>
     </Style>
 
     <Style x:Key="SelectSize_RadioButton" TargetType="RadioButton">
         <Setter Property="IsThreeState" Value="True"/>
         <Setter Property="FontSize" Value="15"/>
-        <Setter Property="Command" Value="{Binding OnSettingChanged}"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Command" Value="{Binding SettingsRadioButton_Click}"/>
         <Setter Property="CommandParameter" Value="{Binding Content, RelativeSource={RelativeSource Self}}"/>
         <Setter Property="Margin" Value="0,10,15,0"/>
     </Style>
